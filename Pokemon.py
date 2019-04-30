@@ -37,6 +37,8 @@ def main():
             if event.type == QUIT:
                 quitgame()
             elif event.type == KEYDOWN:
+                if (event.key == K_ESCAPE) | (event.key == K_BACKSPACE):
+                    quitgame()
                 if (event.key == K_UP) | (event.key == K_w):
                     player.direction['up'] = 1
                 elif (event.key == K_DOWN) | (event.key == K_s):
@@ -57,7 +59,7 @@ def main():
         player.move(status)
         surface.fill(Light_green)
         for stat in status:
-            surface.blit(stat[0], (Display_size[0]/2, Display_size[1]/2))
+            surface.blit(stat[0], [Display_size[0] / 2, Display_size[1] / 2])
         pygame.display.update()
         tick()
 
