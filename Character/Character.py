@@ -9,7 +9,7 @@ class Character:
         self.speed = speed
         self.motion_pos = 0
         self.location = location
-        os.getcwd()
+        self.prev = [None, 0]
         self.direction = {'up': 0, 'down': 0, 'right': 0, 'left': 0}
         self.motion = {'front': [pygame.image.load('../Assets/' + name + '/front_standing.png'),
                         pygame.image.load('../Assets/' + name + '/front_walking1.png'),
@@ -37,44 +37,56 @@ class Character:
                         pygame.image.load('../Assets/' + name + '/left_walking1.png')]}
 
     def moveup(self, status):
+        self.motion_pos %= 8
         stat = [self.motion['back'][self.motion_pos], self.location]
         self.motion_pos += 1
-        self.motion_pos %= 8
-        print(self.motion_pos)
         status.append(stat)
 
     def movedown(self, status):
+        self.motion_pos %= 8
         stat = [self.motion['front'][self.motion_pos], self.location]
         self.motion_pos += 1
-        self.motion_pos %= 8
-        print(self.motion_pos)
         status.append(stat)
 
     def moveright(self, status):
+        self.motion_pos %= 4
         stat = [self.motion['right'][self.motion_pos], self.location]
         self.motion_pos += 1
-        self.motion_pos %= 4
-        print(self.motion_pos)
         status.append(stat)
 
     def moveleft(self, status):
+        self.motion_pos %= 4
         stat = [self.motion['left'][self.motion_pos], self.location]
         self.motion_pos += 1
-        self.motion_pos %= 4
-        print(self.motion_pos)
         status.append(stat)
 
     def move(self, status):
-        if self.direction['up'] == 1:
+        if self.prev[1] > 0:
+            if self.prev[0] == 'up':
+                self.moveup(status)
+            elif self.prev[0] == 'down':
+                self.movedown(status)
+            elif self.prev[0] == 'right':
+                self.moveright(status)
+            elif self.prev[0] == 'left':
+                self.moveleft(status)
+            self.prev[1] += 1
+            if self.prev[1] > 10:
+                self.prev = [None, 0]
+        elif self.direction['up'] == 1:
+            self.prev = ['up', 1]
             self.moveup(status)
         elif self.direction['down'] == 1:
+            self.prev = ['down', 1]
             self.movedown(status)
         elif self.direction['right'] == 1:
+            self.prev = ['right', 1]
             self.moveright(status)
         elif self.direction['left'] == 1:
+            self.prev = ['left', 1]
             self.moveleft(status)
         else:
+            self.prev = [None, 0]
             stat = [self.motion['front'][0], self.location]
-            print(self.motion_pos)
             status.append(stat)
 

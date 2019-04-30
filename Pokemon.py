@@ -1,5 +1,6 @@
 """ This is a Pokemon sort of game where the player roams in an open world fighting enemies and stuff.
  We have IDK what right now
+ Size - 32 x 20 boxes of size 50 x 50 each (1800 x 1000)
  TODO - Make a simple light green background and move it wrt the player
  TODO - animate the character moving style
  TODO - Make the grass and its random occurrence in the ground
