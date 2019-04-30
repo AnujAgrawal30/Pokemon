@@ -11,10 +11,9 @@
 import pygame
 from pygame.locals import *
 import sys
-import os
-os.chdir(os.path.dirname(os.path.realpath(__file__)))
 from Settings.Game import *
 from Settings.Colors import *
+from Character import Character
 
 
 def main():
@@ -29,14 +28,36 @@ def main():
     surface = pygame.display.set_mode(Display_size)
     pygame.display.set_caption(caption)
     fps_clock = pygame.time.Clock()
+    player = Character.Character('Player')
+    temp = pygame.image.load('../Assets/' + 'Player' + '/front_standing.png')
 
     while True:  # Main game loop
+        status = []
         for event in pygame.event.get():
             if event.type == QUIT:
                 quitgame()
+            elif event.type == KEYDOWN:
+                if (event.key == K_UP) | (event.key == K_w):
+                    player.direction['up'] = 1
+                elif (event.key == K_DOWN) | (event.key == K_s):
+                    player.direction['down'] = 1
+                elif (event.key == K_RIGHT) | (event.key == K_d):
+                    player.direction['right'] = 1
+                elif (event.key == K_LEFT) | (event.key == K_a):
+                    player.direction['left'] = 1
+            elif event.type == KEYUP:
+                if (event.key == K_UP) | (event.key == K_w):
+                    player.direction['up'] = 0
+                elif (event.key == K_DOWN) | (event.key == K_s):
+                    player.direction['down'] = 0
+                elif (event.key == K_RIGHT) | (event.key == K_d):
+                    player.direction['right'] = 0
+                elif (event.key == K_LEFT) | (event.key == K_a):
+                    player.direction['left'] = 0
+        player.move(status)
         surface.fill(Light_green)
-        img = pygame.image.load('player.png')
-        surface.blit(img, (Display_size[0]/2, Display_size[1]/2))
+        for stat in status:
+            surface.blit(stat[0], (Display_size[0]/2, Display_size[1]/2))
         pygame.display.update()
         tick()
 
