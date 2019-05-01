@@ -2,7 +2,7 @@
  We have IDK what right now
  Size - 32 x 20 boxes of size 50 x 50 each (1800 x 1000)
  TODO - Make a simple light green background and move it wrt the player
- TODO - animate the character moving style
+ TODO - animate the character moving style ######################################################### Done
  TODO - Make the grass and its random occurrence in the ground
  TODO - Make enemies either in grass or in person (and other characters)
  TODO - Make the interface for interaction with the gamer
@@ -15,6 +15,7 @@ import sys
 from Settings.Game import *
 from Settings.Colors import *
 from Character import Character
+from Map import Map
 
 
 def main():
@@ -30,7 +31,7 @@ def main():
     pygame.display.set_caption(caption)
     fps_clock = pygame.time.Clock()
     player = Character.Character('Player')
-    temp = pygame.image.load('../Assets/' + 'Player' + '/front_standing.png')
+    map = Map.Map()
 
     while True:  # Main game loop
         status = []
@@ -57,10 +58,10 @@ def main():
                     player.direction['right'] = 0
                 elif (event.key == K_LEFT) | (event.key == K_a):
                     player.direction['left'] = 0
-        player.move(status)
+        player.move(status, map)
         surface.fill(Light_green)
         for stat in status:
-            surface.blit(stat[0], [Display_size[0] / 2, Display_size[1] / 2])
+            surface.blit(stat[0], stat[1])
         pygame.display.update()
         tick()
 
